@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+  C / C++ 游乐场 · 边玩边学
+  作者：山寒
+  一个零依赖的纯静态网页：自带 C/C++ 子集解释器、可视化内存与栈帧。
+  双击本文件即可使用，不需要安装编译器，也不需要联网。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080b12">
+<meta name="author" content="山寒">
+<title>C / C++ 游乐场 · 边玩边学 · by 山寒</title>
+<meta name="description" content="一个自带 C/C++ 解释器的学习网页：不用装编译器，写完立刻运行，还能看见内存里发生了什么。作者：山寒。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- ============================ 顶栏 ============================ -->
+<header id="topbar">
+  <div id="brand">
+    <div class="logo">⚙️</div>
+    <div>
+      <div class="bn">C / C++ 游乐场</div>
+      <div class="bs">不用装编译器，写完就能跑 · by 山寒</div>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab on" data-view="learn">📚 课程</button>
+    <button class="tab" data-view="lab">🧪 实验室</button>
+    <button class="tab" data-view="ref">📖 速查表</button>
+    <button class="tab" data-view="quiz">🎯 刷题</button>
+    <button class="tab" data-view="me">🏆 我的</button>
+  </nav>
+
+  <div class="spacer"></div>
+
+  <div class="status">
+    <button class="btn ghost" id="btn-continue" title="接着上次的地方学">▶️ 继续</button>
+    <button class="btn ghost" id="btn-random" title="随便翻一页">🎲 随机</button>
+    <div id="lv-badge"><b>Lv.1</b><span>新手上路</span></div>
+    <div class="xp-wrap">
+      <span id="xp-num">0</span>
+      <div id="xp-bar"><i></i></div>
+    </div>
+    <span class="pill" title="连续学习天数">🔥 <b id="streak-num">0</b> 天</span>
+    <span class="pill" title="已完成的小节">✅ <b id="done-num">0/0</b></span>
+  </div>
+</header>
+
+<!-- ============================ 课程 ============================ -->
+<main id="view-learn" class="view on">
+  <aside id="sidebar">
+    <h3>学习路线</h3>
+    <div id="sidebar-tree"></div>
+  </aside>
+  <section id="lesson-host"></section>
+</main>
+
+<!-- ============================ 实验室 ============================ -->
+<main id="view-lab" class="view"></main>
+
+<!-- ============================ 速查表 ============================ -->
+<main id="view-ref" class="view"></main>
+
+<!-- ============================ 刷题 ============================ -->
+<main id="view-quiz" class="view"></main>
+
+<!-- ============================ 我的 ============================ -->
+<main id="view-me" class="view"></main>
+
+<!-- ============================ Toast ============================ -->
+<div id="toasts"></div>
+
+<!-- ============================ 落款（固定右下角，不占布局） ============================ -->
+<div id="credit" title="本页作者">✍️ 山寒</div>
+
+<!-- ============================ 引擎 ============================ -->
+<script src="js/engine/lexer.js"></script>
+<script src="js/engine/parser.js"></script>
+<script src="js/engine/interpreter.js"></script>
+<script src="js/engine/selftest.js"></script>
+
+<!-- ============================ 课程数据 ============================ -->
+<script src="js/data/lessons-01-basics.js"></script>
+<script src="js/data/lessons-02-adv.js"></script>
+<script src="js/data/lessons-03-pro.js"></script>
+<script src="js/data/snippets.js"></script>
+<script src="js/data/quizbank.js"></script>
+<script src="js/data/chapters.js"></script>
+
+<!-- ============================ 应用 ============================ -->
+<script src="js/app.js"></script>
+<script>
+/* 兜底：如果某个脚本没加载成功，别让用户对着空白页发呆 */
+(function () {
+  setTimeout(function () {
+    var problems = [];
+    if (!window.MC || typeof window.MC.run !== 'function') problems.push('解释器内核（js/engine/*.js）');
+    if (!window.CPP_LESSONS_P1) problems.push('课程数据（js/data/lessons-*.js）');
+    if (!window.MC || !window.MC.CHEATSHEET) problems.push('速查表（js/data/chapters.js）');
+    if (!document.querySelector('.ch-group') && !document.querySelector('.welcome')) {
+      problems.push('主程序（js/app.js）');
+    }
+    if (problems.length) {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;'
+        + 'max-width:520px;padding:24px 28px;background:#151d2c;border:1px solid #f87171;border-radius:14px;'
+        + 'box-shadow:0 20px 60px rgba(0,0,0,.6);font-family:system-ui,sans-serif;color:#e6edf3;line-height:1.7';
+      d.innerHTML = '<h2 style="margin:0 0 10px;color:#fca5a5">页面没能完整加载 😵</h2>'
+        + '<p style="margin:0 0 10px;font-size:14px">下面这些文件没加载成功：</p>'
+        + '<ul style="margin:0 0 12px 18px;font-size:14px;color:#9aa7b8">'
+        + problems.map(function (p) { return '<li>' + p + '</li>'; }).join('') + '</ul>'
+        + '<p style="margin:0;font-size:13px;color:#64748b">'
+        + '请确认 <code>index.html</code> 旁边的 <code>js/</code>、<code>css/</code> 文件夹是完整的，'
+        + '并且是通过双击 index.html（file://）或本地服务器打开，而不是把文件单独挪走。</p>';
+      document.body.appendChild(d);
+    }
+  }, 1200);
+})();
+</script>
+
+<noscript>
+  <div style="max-width:600px;margin:80px auto;padding:28px;background:#151d2c;border-radius:14px;
+              font-family:system-ui,sans-serif;color:#e6edf3;text-align:center">
+    <h2>😕 需要开启 JavaScript</h2>
+    <p style="color:#9aa7b8">这个页面的 C/C++ 解释器是用 JavaScript 写的，代码就在你的浏览器里运行。
+      请在浏览器设置里打开 JavaScript 后刷新。</p>
+  </div>
+</noscript>
+
+</body>
+</html>

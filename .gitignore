@@ -1,0 +1,28 @@
+# ---- 校验脚本产出的报告（想留证据就删掉这两行）----
+verify-report.txt
+verify-clean.txt
+
+# ---- 临时探针 / 调试文件 ----
+tools/_probe_*.c
+tools/_probe_*.cpp
+tools/_probe_*.mjs
+tools/_dbg_*.mjs
+_*.html
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+*~
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# ---- Node（本项目不需要任何依赖，装了也只是为了跑 tools/ 里的校验脚本）----
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# ---- 其他工具的本地状态 ----
+.dsh_*
+.dsh/
