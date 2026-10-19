@@ -976,6 +976,21 @@
         for (var b = 0; b < bytes.length; b++) this.mem.w8(cell.addr + b, bytes[b]);
         return;
       }
+      // 拷贝构造：Widget b = a; —— 类若定义了 Widget(const Widget&)，
+      // 必须调它，不能只做字节复制（否则拷贝构造函数里的逻辑被跳过）
+      if (type.k === 'struct' && type.def) {
+        var cc = this.findCopyCtor(type.def, scope);
+        if (cc) {
+          var candV = this.eval(init, scope);
+          if (isObj(candV) && candV.v === 'struct' && candV.type && candV.type.def &&
+              candV.type.def.name === type.def.name && candV.addr !== cell.addr) {
+            this.mem.zero(cell.addr, this.concreteSize(type, scope) || 4);
+            this.objTypes[cell.addr] = type.def;
+            this.constructStruct(structVal(cell.addr, type), [], scope, type.def, line, [candV]);
+            return;
+          }
+        }
+      }
       var val = this.eval(init, scope);
       this.assignTo(cell, val, scope, init);
     } catch (e) {
@@ -1559,6 +1574,15 @@
       // 容错：string 与字符串字面量的 << 没有意义
     }
     var Rr = this.eval(node.right, scope);
+    // 有符号 / 无符号混合比较：C 会把有符号操作数隐式转成无符号再比，
+    // 所以 `unsigned a = 3; int b = -5; a > b` 是假（-5 变成 4294967291）。
+    if ((op === '<' || op === '>' || op === '<=' || op === '>=' || op === '==' || op === '!=') &&
+        typeof L === 'number' && typeof Rr === 'number') {
+      var lu = this.isUnsignedExpr(node.left, scope);
+      var ru = this.isUnsignedExpr(node.right, scope);
+      if (lu && !ru) Rr = Rr >>> 0;
+      else if (ru && !lu) L = L >>> 0;
+    }
     return this.applyBinary(op, L, Rr, node, scope);
   };
 
@@ -1672,6 +1696,15 @@
   };
 
   /* --- cout / cin ----------------------------------------------------- */
+  // 判断一个表达式的静态类型是不是无符号整型（混合比较要用）
+  Interp.prototype.isUnsignedExpr = function (node, scope) {
+    var t = this.staticTypeOf(node, scope);
+    if (!t) return false;
+    if (t.k === 'ref') t = t.to;
+    if (!t || t.k !== 'prim') return false;
+    return String(t.name).indexOf('unsigned') === 0;
+  };
+
   // 尽力推断表达式的静态类型。只服务于 cout 判断"要不要按字符打印"，推不出来就返回 null。
   Interp.prototype.staticTypeOf = function (node, scope) {
     try {
@@ -1826,13 +1859,14 @@
 
   Interp.prototype.invokeStructMethod = function (target, args, scope, line, argNodes) {
     var boundAddr = target.addr !== undefined ? target.addr : 0;
-    // 虚函数派发：优先用对象实际类型里的同名方法
+    // 虚函数派发：只有当「按静态类型找到的这个函数」是 virtual 时，
+    // 才去对象实际类型里找同名覆盖版本（非 virtual 函数是静态绑定的）
     var dynDef = this.objTypes[boundAddr];
     var fn = target.fn;
     var def = target.def;
-    if (dynDef && dynDef !== def) {
+    if (dynDef && dynDef !== def && fn && fn.isVirtual) {
       var m = this.findMethod(dynDef, target.name);
-      if (m && (m.fn.isVirtual || !m.fn.body ? true : true)) { fn = m.fn; def = m.def; }
+      if (m && m.fn) { fn = m.fn; def = m.def; }
     }
     var callScope = new Scope(this.globalScope || scope);
     callScope.define('this', new Cell(boundAddr, { k: 'ptr', to: { k: 'struct', name: def.name, def: def } }, structVal(boundAddr, { k: 'struct', name: def.name, def: def })));
@@ -1852,6 +1886,30 @@
       args = [];
       haveNodes = true;
       for (var i = 0; i < argNodes.length; i++) args.push(this.eval(argNodes[i], scope));
+    }
+    // 真实 C++ 的次序：基类子对象先构造 → 成员初始化列表 → 构造函数体。
+    // 派生类的构造函数若在初始化列表里显式点了基类名（: Base(args)），
+    // 就交给下面 inits 分支处理，这里跳过，避免构造两次。
+    var baseList = def.bases || [];
+    if (baseList.length) {
+      var ctorPre = (def.ctor && def.ctor.length) ? this.pickCtor(def, args) : null;
+      var mentionedInits = {};
+      var preInits = (ctorPre && ctorPre.inits) || [];
+      for (var mi = 0; mi < preInits.length; mi++) mentionedInits[preInits[mi].name] = true;
+      for (var bi = 0; bi < baseList.length; bi++) {
+        var bd0 = baseList[bi].def || this.structs[baseList[bi].name];
+        if (!bd0 || mentionedInits[bd0.name]) continue;
+        if (!bd0.ctor || !bd0.ctor.length) continue;
+        // 只用无参构造函数；基类若没有默认构造、派生类又没点名，真实编译器会报错
+        var hasDefCtor = false;
+        for (var z = 0; z < bd0.ctor.length; z++) {
+          if (!((bd0.ctor[z].params || []).length)) { hasDefCtor = true; break; }
+        }
+        if (!hasDefCtor) continue;
+        var boff0 = (def.baseOffsets && def.baseOffsets[bd0.name]) || 0;
+        var bt0 = { k: 'struct', name: bd0.name, def: bd0 };
+        this.constructStruct(structVal(sv.addr + boff0, bt0), [], scope, bd0, line, []);
+      }
     }
     if (def.ctor && def.ctor.length) {
       var c = this.pickCtor(def, args);
@@ -1900,20 +1958,21 @@
           this.mem.sp = savedSpC;
         }
       }
-    } else if (def.bases && def.bases.length) {
-      // 默认构造基类
-      var bd = def.bases[0].def || this.structs[def.bases[0].name];
-      if (bd && bd.ctor) {
-        var bc = bd.ctor[0];
-        var bs = new Scope(this.globalScope || scope);
-        bs.define('this', new Cell(sv.addr, { k: 'ptr', to: { k: 'struct', name: bd.name, def: bd } }, sv));
-        if (bc.body) {
-          var bfn = { name: bd.name, retType: null, params: bc.params || [], body: bc.body, line: line, isProto: false };
-          this.executeFunction(bfn, [], bs, line, bd.name + '::' + bd.name, null);
-        }
-      }
     }
     return sv;
+  };
+
+  // 找拷贝构造函数：Widget(const Widget&)
+  Interp.prototype.findCopyCtor = function (def, scope) {
+    var cs = def.ctor || [];
+    for (var i = 0; i < cs.length; i++) {
+      var ps = cs[i].params || [];
+      if (ps.length !== 1) continue;
+      var pt = this.materializeType(ps[0].type, scope);
+      if (pt && pt.k === 'ref') pt = pt.to;
+      if (pt && pt.k === 'struct' && pt.name === def.name) return cs[i];
+    }
+    return null;
   };
 
   Interp.prototype.callCtorNoArgs = function (sv, def, scope, line) {
@@ -2210,6 +2269,17 @@
     }
     this.frames.pop();
     this.mem.sp = savedSp;
+    // 真实 C++ 的次序：先跑自己的析构，再依次跑基类的析构
+    var dtorBases = type.def.bases || [];
+    var seenBD = {};
+    for (var bdi = 0; bdi < dtorBases.length; bdi++) {
+      var bdD = dtorBases[bdi].def || this.structs[dtorBases[bdi].name];
+      if (!bdD || seenBD[bdD.name]) continue;
+      seenBD[bdD.name] = true;
+      if (!bdD.dtor || !bdD.dtor.body) continue;
+      var bdOff = (type.def.baseOffsets && type.def.baseOffsets[bdD.name]) || 0;
+      this.callDestructor({ addr: addr + bdOff }, { k: 'struct', name: bdD.name, def: bdD });
+    }
   };
 
   Interp.prototype.execStatement = function (st, scope, label) {

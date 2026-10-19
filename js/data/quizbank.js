@@ -55,7 +55,7 @@ int main(void) {
       '1 7',
       '1 6'
     ],
-    answer: 1,
+    answer: 2,
     explain: 'x > y 为真，于是求 && 右边：先取 y 的值 6 与 z 比较得到真，比较完成后 y 才自增到 7；真 && 真为真，r = 1，所以输出 1 7。易错点是把短路求值当成“不做自增”——短路只在左边为假时跳过右边，而这里左边为真，右边照样求值并产生副作用。'
   },
   {
@@ -307,6 +307,7 @@ int main(void) {
   },
   {
     id: 'q-algo-004',
+    answerKind: 'behavior',
     topic: '算法',
     level: 'mid',
     q: '这段程序输出什么？',
@@ -375,6 +376,7 @@ int main(void) {
   },
   {
     id: 'q-algo-006',
+    answerKind: 'behavior',
     topic: '算法',
     level: 'hard',
     q: '这段程序为什么输出 120 = 5! 而不是 1? 以下哪个说法正确？',
@@ -541,6 +543,7 @@ int main(void) {
   },
   {
     id: 'q-algo-012',
+    answerKind: 'behavior',
     topic: '算法',
     level: 'mid',
     q: '这段递归调用会发生什么？',
@@ -662,6 +665,7 @@ int main() {
   },
   {
     id: 'q-cpp-003',
+    answerKind: 'behavior',
     topic: 'C++',
     level: 'mid',
     q: '运行后程序会输出什么？',
@@ -751,6 +755,7 @@ int main() {
   },
   {
     id: 'q-cpp-006',
+    answerKind: 'behavior',
     topic: 'C++',
     level: 'hard',
     q: '这段代码的输出说明基类 speak 缺少什么？',
@@ -825,6 +830,7 @@ int main() {
   },
   {
     id: 'q-cpp-009',
+    answerKind: 'behavior',
     topic: 'C++',
     level: 'hard',
     q: '这段代码的输出是什么，说明了什么？',
@@ -896,7 +902,8 @@ int main() {
     id: 'q-cpp-011',
     topic: 'C++',
     level: 'hard',
-    q: '下面哪个函数声明是非法的？',
+    runnable: false,
+    q: '下面哪个函数声明是非法的？（这是一段示意代码，不能直接编译——请逐个判断 ①~④）',
     code: `// 下面每组声明单独出现时，哪一组不能通过编译
 class A {
 public:
@@ -974,6 +981,7 @@ int main(void) {
   },
   {
     id: 'q-array-003',
+    simDiffers: '模拟器是 32 位指针模型（指针 4 字节），真机 64 位是 8 字节——题干已注明「在 64 位平台上」',
     topic: '数组',
     level: 'mid',
     q: '这段程序输出什么？（在 64 位平台上）',
@@ -1025,6 +1033,7 @@ int main(void) {
   },
   {
     id: 'q-array-005',
+    answerKind: 'behavior',
     topic: '数组',
     level: 'hard',
     q: '这段代码会输出什么？',
@@ -1049,6 +1058,7 @@ int main(void) {
   },
   {
     id: 'q-array-006',
+    answerKind: 'behavior',
     topic: '数组',
     level: 'hard',
     q: '这段程序输出什么？',
@@ -1231,7 +1241,7 @@ int main(void) {
       '地址值',
       '段错误'
     ],
-    answer: 1,
+    answer: 0,
     explain: 'pp 是二级指针，指向指针 p；*pp 得到 p（也就是 a 的地址），**pp 就是 a 本身，所以 **pp = 99 把 a 改成了 99。逐层剥开记：pp 存 p 的地址，*pp 是 p，**pp 是 a。易错点：以为要写 *pp = 99 就能改到 a，那实际上改的是 p 的指向。'
   },
   {
@@ -1254,7 +1264,7 @@ int main(void) {
       '6',
       '8'
     ],
-    answer: 2,
+    answer: 0,
     explain: '*q 是 a[2] = 6，*p 是 a[0] = 2，两者相减得到 4（注意是先解引用再相减，得到的是两个整数的差，不是指针差）。如果写成 q - p 则是指针相减，结果是元素个数 2。易错点：把 *q - *p 与 q - p 混为一谈——星号的位置决定了算的是值还是位置。'
   },
   {
@@ -1421,6 +1431,7 @@ int main(void) {
   },
   {
     id: 'q-str-007',
+    answerKind: 'behavior',
     topic: '字符串',
     level: 'hard',
     q: '这段代码的输出是什么，说明什么问题？',
@@ -1501,6 +1512,7 @@ int main(void) {
   },
   {
     id: 'q-struct-003',
+    answerKind: 'behavior',
     topic: '结构体',
     level: 'hard',
     q: '这段程序输出什么？',
@@ -1528,6 +1540,7 @@ int main(void) {
   /* ============ 内存 ============ */
   {
     id: 'q-mem-001',
+    answerKind: 'behavior',
     topic: '内存',
     level: 'easy',
     q: '这段程序输出什么？',
@@ -1554,6 +1567,7 @@ int main(void) {
   },
   {
     id: 'q-mem-002',
+    answerKind: 'behavior',
     topic: '内存',
     level: 'easy',
     q: '这段程序有什么问题？',
@@ -1610,6 +1624,7 @@ int main(void) {
   },
   {
     id: 'q-mem-004',
+    answerKind: 'behavior',
     topic: '内存',
     level: 'hard',
     q: '这段程序有什么问题？',
@@ -1637,6 +1652,7 @@ int main(void) {
   },
   {
     id: 'q-mem-005',
+    answerKind: 'behavior',
     topic: '内存',
     level: 'mid',
     q: '这段程序有什么问题？',
@@ -1768,6 +1784,7 @@ int main(void) {
   },
   {
     id: 'q-pit-004',
+    answerKind: 'behavior',
     topic: '易错',
     level: 'mid',
     q: '这段程序的循环体执行了几次？',
@@ -1818,6 +1835,7 @@ int main(void) {
   },
   {
     id: 'q-pit-006',
+    answerKind: 'behavior',
     topic: '易错',
     level: 'hard',
     q: '这段程序输出什么？',
@@ -1926,5 +1944,995 @@ int main(void) {
     ],
     answer: 0,
     explain: '*p + 1 先取 p 指向的 a[0] = 1，再加 1，结果是 2；数组内容和指针都没变。如果写 *(p + 1) 则是指针先移动一个元素再解引用，得到 a[1] = 2——本题两种写法恰好都输出 2，但含义完全不同：一个改的是值，一个改的是位置。若写成 *p++ 会同时移动指针（并返回移动前指向的值），是最容易看走眼的一种。'
+  },
+  {
+    id: 'q-basics-101',
+    topic: '基础',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a = 5, b = 2;
+    printf("%d %d\\n", a / b, a % b);
+    return 0;
+}`,
+    options: [
+      '2 1',
+      '2.5 1',
+      '2 0',
+      '2.5 0'
+    ],
+    answer: 0,
+    explain: '两个 int 相除做的是整数除法，5 / 2 直接截断为 2；% 取余得到 1。只有操作数中至少有一个是浮点类型时才会算出 2.5，所以不能按数学除法来选。'
+  },
+  {
+    id: 'q-basics-102',
+    topic: '基础',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    printf("%d\\n", 'A' + 1);
+    return 0;
+}`,
+    options: [
+      '65',
+      '66',
+      '67',
+      '98'
+    ],
+    answer: 1,
+    explain: '字符常量 \'A\' 在表达式里按它的 ASCII 码 65 参与运算，加 1 得到 66。很多人会顺手选 67（那是 \'C\'），或者以为 %d 会把 66 再转成字符 \'B\' 打印出来。'
+  },
+  {
+    id: 'q-basics-103',
+    topic: '基础',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+void add(int x) {
+    x = x + 10;
+}
+
+int main(void) {
+    int a = 5;
+    add(a);
+    printf("%d\\n", a);
+    return 0;
+}`,
+    options: [
+      '5',
+      '10',
+      '15',
+      '0'
+    ],
+    answer: 0,
+    explain: 'C 语言函数参数是值传递：调用 add(a) 时把 5 复制给形参 x，函数里改的是副本，main 里的 a 完全不受影响，所以仍输出 5。易错点是看到 x = x + 10 就以为 a 也被改了；想在函数里改实参必须传指针。'
+  },
+  {
+    id: 'q-basics-104',
+    topic: '基础',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[5] = {1, 2, 3, 4, 5};
+    int n = sizeof(a) / sizeof(a[0]);
+    printf("%d\\n", n);
+    return 0;
+}`,
+    options: [
+      '1',
+      '4',
+      '5',
+      '20'
+    ],
+    answer: 2,
+    explain: 'sizeof(a) 数的是整个数组占的字节数（本机 int 为 4 字节，所以是 20），sizeof(a[0]) 是单个元素的 4 字节，相除正好得到元素个数 5。易错点是把 sizeof 当成“数组长度”直接得 4，或者把字节数 20 当答案。'
+  },
+  {
+    id: 'q-array-101',
+    topic: '数组',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[6] = {2, 4};
+    printf("%d %d %d\\n", a[0] + a[1], a[3], (int)(sizeof(a) / sizeof(a[0])));
+    return 0;
+}`,
+    options: [
+      '6 随机值 6',
+      '6 0 6',
+      '2 0 2',
+      '6 0 2'
+    ],
+    answer: 1,
+    explain: '只写了两个初始值，其余元素按 C 的规则自动补 0，所以 a[3] 是 0 而不是随机值。a[0] + a[1] = 2 + 4 = 6；sizeof(a) 是 24 字节，除以 sizeof(a[0]) 得元素个数 6。易错点：以为没初始化的元素是垃圾值，或者把 6 当成字节数。'
+  },
+  {
+    id: 'q-array-102',
+    topic: '数组',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    printf("%d %d\\n", a[1][1], a[0][2]);
+    return 0;
+}`,
+    options: [
+      '5 6',
+      '4 3',
+      '5 3',
+      '6 3'
+    ],
+    answer: 2,
+    explain: '二维数组的两个下标都从 0 开始：a[1][1] 是第 2 行第 2 列，值为 5；a[0][2] 是第 1 行第 3 列，值为 3。易错点：把 a[1][1] 数成第 1 行第 1 列而答 4，或者把 a[0][2] 错当成第 2 列的 2。'
+  },
+  {
+    id: 'q-array-103',
+    topic: '数组',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[5] = {1, 2, 3, 4, 5};
+    for (int i = 0; i < 5 / 2; i++) {
+        int t = a[i];
+        a[i] = a[4 - i];
+        a[4 - i] = t;
+    }
+    printf("%d %d %d\\n", a[0], a[2], a[4]);
+    return 0;
+}`,
+    options: [
+      '5 3 1',
+      '5 4 1',
+      '5 3 5',
+      '1 3 5'
+    ],
+    answer: 0,
+    explain: '循环只走 i = 0、1（i < 5 / 2 即 i < 2），把 a[0] 与 a[4]、a[1] 与 a[3] 交换，中间元素 a[2] 不动，数组逆序成 5 4 3 2 1。易错点：把循环写成 i < 5 会把数组再换回去变回原样，或者以为 a[2] 也被交换。'
+  },
+  {
+    id: 'q-array-104',
+    topic: '数组',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[6] = {1, 2, 3, 4, 5, 6};
+    int first = a[0];
+    for (int i = 1; i < 6; i++) {
+        a[i - 1] = a[i];
+    }
+    a[5] = first;
+    printf("%d %d %d\\n", a[0], a[2], a[5]);
+    return 0;
+}`,
+    options: [
+      '2 4 6',
+      '1 3 5',
+      '2 3 1',
+      '2 4 1'
+    ],
+    answer: 3,
+    explain: '循环把每个元素左移一位，数组变成 2 3 4 5 6 6；最后用事先保存的 first 覆盖末尾，得到 2 3 4 5 6 1。所以 a[0] = 2、a[2] = 4、a[5] = 1。易错点：不保存 a[0] 就直接移位，会丢掉 1；或者以为 a[5] 仍是 6。'
+  },
+  {
+    id: 'q-ptr-101',
+    topic: '指针',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[6] = {10, 20, 30, 40, 50, 60};
+    int *p = a + 1;
+    printf("%d %d %d\\n", *p, p[2], *(p + 4));
+    return 0;
+}`,
+    options: [
+      '10 30 50',
+      '20 40 60',
+      '20 30 50',
+      '20 40 50'
+    ],
+    answer: 1,
+    explain: 'p = a + 1 让 p 指向 a[1]，所以 *p 是 20。p[2] 等价于 *(p + 2)，即 a[3]，值为 40；*(p + 4) 是 a[5]，值为 60。易错点是把 p[2] 当成 a[2] 而答成 20 40 50，其实指针下标同样从 p 当前位置起算。'
+  },
+  {
+    id: 'q-ptr-102',
+    topic: '指针',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+void fill(int *p) {
+    p++;
+    *p = 99;
+}
+
+int main(void) {
+    int a[3] = {1, 2, 3};
+    fill(a);
+    printf("%d %d %d\\n", a[0], a[1], a[2]);
+    return 0;
+}`,
+    options: [
+      '99 2 3',
+      '1 99 3',
+      '1 2 99',
+      '1 2 3'
+    ],
+    answer: 1,
+    explain: '形参 p 是按值传递的指针副本，p++ 只让副本指向 a[1]，并不会改变 main 里的 a（数组名本身也不能被赋值）。但 *p = 99 写的是副本当前指向的 a[1]，所以数组变成 1 99 3。易错点：以为 p++ 能移动调用者的指针，或者以为改的是 a[0]。'
+  },
+  {
+    id: 'q-ptr-103',
+    topic: '指针',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[5] = {1, 2, 3, 4, 5};
+    int *p = &a[1];
+    int *q = a + 4;
+    printf("%d %d\\n", (int)(q - p), *(q - 1));
+    return 0;
+}`,
+    options: [
+      '3 4',
+      '12 4',
+      '3 2',
+      '4 3'
+    ],
+    answer: 0,
+    explain: '同一数组内的两个指针相减，结果是它们之间相隔的元素个数，而不是字节数：q 指向 a[4]、p 指向 a[1]，所以 q - p 为 3（若按字节算才是 12）。*(q - 1) 等价 a[3]，值为 4。易错点：用 (int)(q - p) 时误以为得到地址差 12。'
+  },
+  {
+    id: 'q-ptr-104',
+    simUnsupported: true,
+    topic: '指针',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[3] = {7, 8, 9};
+    int *p[3] = {&a[0], &a[1], &a[2]};
+    int (*q)[3] = &a;
+    printf("%d %d\\n", *p[1], (*q)[2]);
+    return 0;
+}`,
+    options: [
+      '7 9',
+      '8 8',
+      '8 9',
+      '编译错误，两种声明互相矛盾'
+    ],
+    answer: 2,
+    explain: 'p 是“指针数组”：3 个 int * 元素，p[1] 是 &a[1]，*p[1] 就是 8。q 是“数组指针”：一个指向 int[3] 的指针，*q 得到整个数组，(*q)[2] 就是 a[2] = 9。易错点：把 int *p[3] 和 int (*q)[3] 当成同一种类型，或者以为 *p[1] 要先解引用整个数组。'
+  },
+  {
+    id: 'q-str-101',
+    topic: '字符串',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    char s[] = "hello";
+    printf("%c %c %s\\n", s[1], *(s + 4), s + 2);
+    return 0;
+}`,
+    options: [
+      'e l llo',
+      'e o llo',
+      'h o llo',
+      'e o hello'
+    ],
+    answer: 1,
+    explain: 's[1] 是第二个字符 e；*(s + 4) 等价 s[4]，是 o。%s 需要的是首地址，s + 2 指向第三个字符 l，于是从那里一直打印到结尾的 \'\\0\'，得到 llo。易错点：把 s + 2 当成“打印 2 个字符”，或者误以为 *s + 2 也是同样意思（那是字符 e 的编码加 2）。'
+  },
+  {
+    id: 'q-str-102',
+    topic: '字符串',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    char s[] = "programming";
+    int n = 0;
+    for (char *p = s; *p != '\\0'; p++) {
+        if (*p == 'a' || *p == 'e' || *p == 'i' || *p == 'o' || *p == 'u') {
+            n++;
+        }
+    }
+    printf("%d\\n", n);
+    return 0;
+}`,
+    options: [
+      '2',
+      '3',
+      '4',
+      '11'
+    ],
+    answer: 1,
+    explain: '循环用指针 p 遍历 s，遇到结尾的 \'\\0\' 就停下，因此不会把结束符算进字符。programming 里的小写元音只有 o、a、i 三个，所以 n 是 3。易错点：把 strlen 的 11 当答案，或者漏掉其中某个元音。'
+  },
+  {
+    id: 'q-struct-101',
+    topic: '结构体',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+struct Point {
+    int x;
+    int y;
+};
+
+int main(void) {
+    struct Point a = {1, 2};
+    struct Point b = a;
+    b.x = 10;
+    printf("%d %d\\n", a.x, b.x);
+    return 0;
+}`,
+    options: [
+      '10 10',
+      '1 2',
+      '1 10',
+      '10 2'
+    ],
+    answer: 2,
+    explain: '结构体赋值是逐成员的值拷贝，b = a 之后 b 是一份独立的数据，改 b.x 不会影响 a.x。所以 a.x 仍是 1，b.x 变成 10。易错点：把结构体赋值想象成引用共享，以为两个变量指向同一块内存。'
+  },
+  {
+    id: 'q-struct-102',
+    topic: '结构体',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+struct Box {
+    int w;
+    int h;
+};
+
+void grow(struct Box b) {
+    b.w += 10;
+}
+
+void grow_ptr(struct Box *b) {
+    b->w += 10;
+}
+
+int main(void) {
+    struct Box b = {5, 6};
+    grow(b);
+    grow_ptr(&b);
+    printf("%d %d\\n", b.w, b.h);
+    return 0;
+}`,
+    options: [
+      '25 6',
+      '15 6',
+      '5 6',
+      '15 16'
+    ],
+    answer: 1,
+    explain: 'grow 按值接收整个结构体，改的是副本，不影响 main 里的 b；grow_ptr 接收指针，通过 -> 直接改原对象，所以 w 从 5 变成 15。h 始终没被修改，仍是 6。易错点：以为函数传结构体会自动“传引用”，把两次 +10 都算上得到 25。'
+  },
+  {
+    id: 'q-cpp-101',
+    topic: 'C++',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+void addOne(int x) {
+    x += 1;
+}
+
+void addTwo(int& x) {
+    x += 2;
+}
+
+int main() {
+    int a = 10;
+    addOne(a);
+    addTwo(a);
+    cout << a << endl;
+    return 0;
+}`,
+    options: [
+      '10',
+      '11',
+      '12',
+      '13'
+    ],
+    answer: 2,
+    explain: 'addOne 的参数是 int（传值），形参只是 a 的副本，在函数里加 1 不会影响 a。addTwo 的参数是 int&（传引用），形参就是 a 本身，加 2 会真正修改它。所以 a 从 10 变成 12。易错点：以为 addOne 也改了 a。'
+  },
+  {
+    id: 'q-cpp-102',
+    topic: 'C++',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+int twice(const int& x) {
+    return x * 2;
+}
+
+int main() {
+    int a = 5;
+    const int b = 7;
+    cout << twice(a) + twice(b + 1) << endl;
+    return 0;
+}`,
+    options: [
+      '24',
+      '26',
+      '27',
+      '20'
+    ],
+    answer: 1,
+    explain: 'const int& 既能绑定普通变量，也能绑定 const 变量，还能绑定 b + 1 这种临时值（临时对象的生命周期会延长到本次调用结束）。两次调用分别是 5 * 2 = 10 与 8 * 2 = 16，相加得 26。易错点：以为 const 引用不能接表达式，或者把 b + 1 算成 7。'
+  },
+  {
+    id: 'q-cpp-103',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+void show(int x) { cout << "int:" << x << ";"; }
+void show(double x) { cout << "double:" << x << ";"; }
+void show(const char* s) { cout << "str:" << s << ";"; }
+
+int main() {
+    show(3);
+    show('A');
+    show(2.0f);
+    cout << endl;
+    return 0;
+}`,
+    options: [
+      'int:3;int:65;double:2;',
+      'int:3;int:65;double:2.0;',
+      'str:3;int:65;double:2;',
+      'int:3;int:65;int:2;'
+    ],
+    answer: 0,
+    explain: 'show(\'A\') 实参是 char：转 int 属于整型提升，转 double 属于浮点转换，提升优于转换，所以选中 show(int)，打印字符 A 的编码 65。show(2.0f) 的 float 转 double 是浮点提升，优于转 int，因此选中 show(double)；cout 默认按 6 位有效数字打印，2.0 显示为 2。'
+  },
+  {
+    id: 'q-cpp-104',
+    topic: 'C++',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+int power(int base, int exp = 2) {
+    int r = 1;
+    for (int i = 0; i < exp; i++) {
+        r *= base;
+    }
+    return r;
+}
+
+int main() {
+    cout << power(3) << " " << power(2, 3) << " " << power(2, 0) << endl;
+    return 0;
+}`,
+    options: [
+      '9 8 1',
+      '3 8 0',
+      '9 8 0',
+      '3 8 1'
+    ],
+    answer: 0,
+    explain: 'exp 有默认值 2，所以 power(3) 等价于 power(3, 2) = 9；power(2, 3) = 8。power(2, 0) 时循环一次也不执行，r 保持初值 1，任何数的 0 次幂都是 1。易错点：把 power(2, 0) 当成 0。'
+  },
+  {
+    id: 'q-cpp-105',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+class Box {
+    int a;
+    int b;
+public:
+    Box(int v) : b(a * 2), a(v) {}
+    void show() { cout << a << " " << b << endl; }
+};
+
+int main() {
+    Box x(3);
+    x.show();
+    return 0;
+}`,
+    options: [
+      '3 6',
+      '6 3',
+      '6 6',
+      '3 0'
+    ],
+    answer: 0,
+    explain: '初始化列表的真正执行顺序由成员在类中的声明顺序决定，与初始化列表的书写顺序无关。这里 a 先声明，所以先执行 a(v) 得到 3，再执行 b(a * 2) 得到 6。易错点：按书写顺序以为先算 b，从而选 6 3。'
+  },
+  {
+    id: 'q-cpp-106',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+class Item {
+public:
+    int v;
+    Item(int x) : v(x) { cout << "ctor "; }
+    Item(const Item& o) : v(o.v) { cout << "copy "; }
+};
+
+void take(Item it) {
+    cout << "take ";
+}
+
+int main() {
+    Item a(1);
+    take(a);
+    Item b = a;
+    cout << b.v << endl;
+    return 0;
+}`,
+    options: [
+      'ctor copy take copy 1',
+      'ctor take copy 1',
+      'ctor copy copy take 1',
+      'ctor copy take 1'
+    ],
+    answer: 0,
+    explain: 'Item a(1) 调用普通构造函数，输出 ctor。take(a) 是值传递，用 a 初始化形参，调用拷贝构造，输出 copy，进入函数体再输出 take。Item b = a 虽然写成等号，但它仍是拷贝初始化，并且 a 是左值，不能省略拷贝，所以再输出一次 copy，最后打印 b.v = 1。'
+  },
+  {
+    id: 'q-cpp-107',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+class Counter {
+    static int total;
+public:
+    Counter() { total++; }
+    static int get() { return total; }
+};
+
+int Counter::total = 0;
+
+int main() {
+    Counter a, b;
+    Counter c[3];
+    cout << Counter::get() << endl;
+    return 0;
+}`,
+    options: [
+      '2',
+      '3',
+      '5',
+      '6'
+    ],
+    answer: 2,
+    explain: '静态成员 total 属于类而不属于某个对象，所有 Counter 对象共用同一份。a、b 各构造一次，数组 c 的 3 个元素各构造一次，共 5 次自增，所以 get() 返回 5。易错点：以为数组只算一个对象，或者把静态成员当成每个对象各有一份。'
+  },
+  {
+    id: 'q-cpp-108',
+    topic: 'C++',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+class Animal {
+public:
+    virtual void speak() { cout << "animal;"; }
+    virtual ~Animal() {}
+};
+
+class Dog : public Animal {
+public:
+    void speak() { cout << "dog;"; }
+};
+
+int main() {
+    Animal* p = new Dog();
+    p->speak();
+    Animal a = *p;
+    a.speak();
+    delete p;
+    cout << endl;
+    return 0;
+}`,
+    options: [
+      'dog;animal;',
+      'animal;animal;',
+      'dog;dog;',
+      'animal;dog;'
+    ],
+    answer: 0,
+    explain: '通过基类指针 p 调用虚函数 speak 会发生动态绑定，实际调用 Dog::speak，输出 dog。但 Animal a = *p 是用 Dog 对象中的 Animal 子对象去初始化一个 Animal 对象，发生了对象切片，派生部分被切掉，a 的类型就是 Animal；对值对象调用虚函数不构成多态，输出 animal。'
+  },
+  {
+    id: 'q-cpp-109',
+    topic: 'C++',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s = "hello";
+    s += " world";
+    auto n = s.size();
+    cout << n << " " << s.substr(6, 5) << endl;
+    return 0;
+}`,
+    options: [
+      '11 world',
+      '5 world',
+      '11 worl',
+      '11 hello'
+    ],
+    answer: 0,
+    explain: '拼接后 s 是 "hello world"，共 11 个字符（含中间的空格），所以 size() 为 11。substr(6, 5) 表示从下标 6 开始取 5 个字符，下标 6 正好是 w，得到 "world"。auto 会把 n 推导为 size_t，但 cout 输出仍显示 11。'
+  },
+  {
+    id: 'q-cpp-110',
+    topic: 'C++',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    vector<int> v = {5, 10, 15, 20};
+    int sum = 0;
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if (*it > 8) {
+            *it += 1;
+        }
+        sum += *it;
+    }
+    cout << sum << " " << v[1] << endl;
+    return 0;
+}`,
+    options: [
+      '51 10',
+      '53 11',
+      '53 10',
+      '57 11'
+    ],
+    answer: 1,
+    explain: '迭代器 it 指向元素，*it 就是元素本身，所以 *it += 1 会真的修改容器内容：10、15、20 都大于 8，分别变成 11、16、21，5 不变。累加 5 + 11 + 16 + 21 = 53，而 v[1] 已经是 11。易错点：以为修改的是副本，得到 5+10+15+20 = 50 附近的结果。'
+  },
+  {
+    id: 'q-cpp-111',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+using namespace std;
+
+class Tracer {
+    int id;
+public:
+    Tracer() : id(0) { cout << "new" << id << ";"; }
+    Tracer(int i) : id(i) { cout << "new" << id << ";"; }
+    ~Tracer() { cout << "del" << id << ";"; }
+};
+
+int main() {
+    Tracer* p = new Tracer(1);
+    Tracer* q = new Tracer[2];
+    delete p;
+    delete[] q;
+    cout << endl;
+    return 0;
+}`,
+    options: [
+      'new1;new0;new0;del1;del0;del0;',
+      'new1;new0;new0;del0;del0;del1;',
+      'new1;new0;del1;del0;del0;',
+      'new1;new0;new0;del0;del1;del0;'
+    ],
+    answer: 0,
+    explain: 'new Tracer(1) 构造 id 为 1 的对象，输出 new1。new Tracer[2] 需要默认构造函数，会为两个元素各构造一次，都输出 new0。delete p 析构单个对象，输出 del1；delete[] q 按相反顺序析构数组元素，输出两次 del0。注意 new 必须配 delete、new[] 必须配 delete[]，否则是未定义行为。'
+  },
+  {
+    id: 'q-cpp-112',
+    simUnsupported: true,
+    topic: 'C++',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <iostream>
+#include <vector>
+using namespace std;
+
+class Store {
+    vector<int> d;
+public:
+    Store() {
+        d.push_back(1);
+        d.push_back(2);
+        d.push_back(3);
+        d.push_back(4);
+    }
+    int sum() {
+        int s = 0;
+        for (int x : d) s += x;
+        return s;
+    }
+    int sum() const {
+        int s = 0;
+        for (int x : d) s += x * 2;
+        return s;
+    }
+};
+
+int main() {
+    Store a;
+    const Store& r = a;
+    cout << a.sum() << " " << r.sum() << endl;
+    return 0;
+}`,
+    options: [
+      '10 20',
+      '20 10',
+      '10 10',
+      '20 20'
+    ],
+    answer: 0,
+    explain: 'sum 有两个 const 重载版本：非 const 对象 a 调用非 const 版本，累加得 1+2+3+4 = 10；const 引用 r 只能调用 const 成员函数，该版本把每个元素乘 2 再累加，得 20。const 引用绑定的是同一个对象，但调用哪个重载由引用本身的 const 属性决定。'
+  },
+  {
+    id: 'q-algo-101',
+    topic: '算法',
+    level: 'easy',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = a % b;
+        a = b;
+        b = t;
+    }
+    return a;
+}
+
+int main(void) {
+    printf("%d\\n", gcd(48, 18));
+    return 0;
+}`,
+    options: [
+      '3',
+      '6',
+      '12',
+      '18'
+    ],
+    answer: 1,
+    explain: '这是辗转相除法：48 % 18 = 12，18 % 12 = 6，12 % 6 = 0，循环结束时 b 为 0，非零的 a 就是最大公约数 6。易错点是循环结束后误返回 b（此时 b 已经是 0），或者把最后一次余数 0 当成答案。'
+  },
+  {
+    id: 'q-algo-102',
+    topic: '算法',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int f(int n) {
+    if (n <= 2) return 1;
+    return f(n - 1) + f(n - 2);
+}
+
+int main(void) {
+    printf("%d\\n", f(7));
+    return 0;
+}`,
+    options: [
+      '8',
+      '12',
+      '13',
+      '21'
+    ],
+    answer: 2,
+    explain: '这是递归版斐波那契：前两项都是 1，之后每项等于前两项之和，依次为 1、1、2、3、5、8、13，所以 f(7) = 13。易错点是把 f(7) 当成第 7 项却又从 0 开始数，或者把下一项 21（f(8)）错选进来。'
+  },
+  {
+    id: 'q-algo-103',
+    topic: '算法',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a[] = {5, 2, 4, 1, 3};
+    int n = 5;
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (a[j] > a[j + 1]) {
+                int t = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = t;
+            }
+        }
+    }
+    for (int i = 0; i < n; i++) {
+        if (i > 0) printf(" ");
+        printf("%d", a[i]);
+    }
+    printf("\\n");
+    return 0;
+}`,
+    options: [
+      '1 2 3 4 5',
+      '5 4 3 2 1',
+      '1 2 3 5 4',
+      '2 1 3 4 5'
+    ],
+    answer: 0,
+    explain: '冒泡排序每轮把未排序部分的最大值“冒”到末尾，条件是 a[j] > a[j+1] 时交换，最终得到升序的 1 2 3 4 5。内层上界写成 n-1-i 是为了不再碰已经排好的尾部；输出时只在 i>0 时补空格，所以行尾没有多余空格。'
+  },
+  {
+    id: 'q-algo-104',
+    topic: '算法',
+    level: 'hard',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int n = 30, cnt = 0;
+    int is_prime[31];
+    for (int i = 0; i <= n; i++) is_prime[i] = 1;
+    is_prime[0] = 0;
+    is_prime[1] = 0;
+    for (int i = 2; i * i <= n; i++) {
+        if (is_prime[i]) {
+            for (int j = i * i; j <= n; j += i) is_prime[j] = 0;
+        }
+    }
+    for (int i = 2; i <= n; i++) {
+        if (is_prime[i]) cnt++;
+    }
+    printf("%d\\n", cnt);
+    return 0;
+}`,
+    options: [
+      '9',
+      '10',
+      '11',
+      '12'
+    ],
+    answer: 1,
+    explain: '这是埃氏筛：从 2 开始，把每个素数的倍数（从 i*i 起）标记为合数，最后统计 30 以内的素数 2、3、5、7、11、13、17、19、23、29，共 10 个。易错点是忘了把 0 和 1 标成非素数（会多算 2 个），或者把内层起点写成 2*i（结果不变但思路不是筛法的关键）。'
+  },
+  {
+    id: 'q-pit-101',
+    topic: '易错',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int i = 0;
+    int a = (i++ > 0) && (i++ > 0);
+    printf("%d %d\\n", a, i);
+    return 0;
+}`,
+    options: [
+      '0 1',
+      '0 2',
+      '1 1',
+      '1 2'
+    ],
+    answer: 0,
+    explain: '&& 具有短路求值：左边 i++ > 0 用 0 比较，结果为假，同时 i 自增为 1，右边的 i++ 根本不会执行，所以 i 只加了这一次。最终 a = 0、i = 1，输出 0 1；选 0 2 就是忽略了短路。'
+  },
+  {
+    id: 'q-pit-102',
+    topic: '易错',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int a = 7, b = 2;
+    double x = a / b;
+    printf("%.1f\\n", x);
+    return 0;
+}`,
+    options: [
+      '3.0',
+      '3.5',
+      '3',
+      '4.0'
+    ],
+    answer: 0,
+    explain: 'a / b 的两个操作数都是 int，先做整数除法得到 3，再赋值给 double 才变成 3.0。类型转换发生在除法之后是没用的，要得到 3.5 必须写成 (double)a / b 或 7.0 / 2。'
+  },
+  {
+    id: 'q-pit-103',
+    topic: '易错',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    int x = 5;
+    if (x = 0)
+        printf("zero\\n");
+    else
+        printf("nonzero\\n");
+    return 0;
+}`,
+    options: [
+      'zero',
+      'nonzero',
+      '5',
+      '程序无法编译'
+    ],
+    answer: 1,
+    explain: 'if (x = 0) 是赋值表达式：先把 0 赋给 x，整个表达式的值也是 0，于是条件为假，走 else 分支输出 nonzero。编译器一般只给警告而不是错误，判断相等必须写 ==；另外别把输出当成 x 的值 5。'
+  },
+  {
+    id: 'q-pit-104',
+    topic: '易错',
+    level: 'mid',
+    q: '这段程序输出什么？',
+    code: `#include <stdio.h>
+
+int main(void) {
+    printf("%d\\n", 1 << 3 + 1);
+    return 0;
+}`,
+    options: [
+      '4',
+      '8',
+      '9',
+      '16'
+    ],
+    answer: 3,
+    explain: '加法 + 的优先级高于左移 <<，所以 1 << 3 + 1 等价于 1 << (3 + 1)，即 1 << 4 = 16。想表达 (1 << 3) + 1 = 9 必须自己加括号；这类“少一对括号”的优先级陷阱在考试里很常见。'
   }
 ];

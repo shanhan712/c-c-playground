@@ -1362,6 +1362,12 @@
       + (solved ? '<span class="q-solved">✅ 做过</span>' : '') + '</div>';
     h += '<div class="q-text">' + richHtml(q.q) + '</div>';
     if (q.code) h += '<pre class="ch-code"><code>' + highlightC(q.code) + '</code></pre>';
+    // 少数题用到了页面内模拟器还没实现的特性。代码是标准 C/C++（已用真实 g++ 校验过），
+    // 只是别指望能原样粘到实验室里跑出同样的结果——这里先说明一句，免得误会。
+    if (q.simUnsupported) {
+      h += '<div class="q-hint">💡 这段代码是标准 C++，已经用真实 g++ 编译运行校验过；'
+        + '页面内的解释器暂时还不支持它的部分语法，所以别直接粘到实验室里期待同样的输出。</div>';
+    }
     h += '<div class="ch-options">';
     q.options.forEach(function (o, i) {
       h += '<button class="opt" data-i="' + i + '"><span class="opt-k">' + 'ABCD'[i] + '</span>'
